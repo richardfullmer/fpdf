@@ -16,7 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
+namespace PDF;
 if (!defined ('PDF_TYPE_NULL'))
     define ('PDF_TYPE_NULL', 0);
 if (!defined ('PDF_TYPE_NUMERIC'))
@@ -41,10 +41,9 @@ if (!defined ('PDF_TYPE_STREAM'))
     define ('PDF_TYPE_STREAM', 10);
 
 
-require_once 'PDF/wrapper_functions.php';
-require_once 'PDF/pdf_parser.php';
+require_once 'wrapper_functions.php';
 
-class fpdi_pdf_parser extends pdf_parser {
+class fpdiPdfParser extends pdfParser {
 
     /**
      * Pages
@@ -84,11 +83,11 @@ class fpdi_pdf_parser extends pdf_parser {
      * @param string $filename  Source-Filename
      * @param object $fpdi      Object of type fpdi
      */
-    function fpdi_pdf_parser($filename,&$fpdi) {
+    function __construct($filename,&$fpdi) {
         $this->fpdi =& $fpdi;
         $this->filename = $filename;
         
-        parent::pdf_parser($filename);
+        parent::__construct($filename);
 
         // Get Info
         $this->getInfo();
@@ -351,7 +350,7 @@ class fpdi_pdf_parser extends pdf_parser {
                 case "/ASCII85Decode":
                     @include_once("decoders/ascii85.php");
                     if (class_exists("ASCII85Decode")) {
-                        $ascii85 = new ASCII85Decode($this->fpdi);
+                        $ascii85 = new \ASCII85Decode($this->fpdi);
                         $stream = $ascii85->decode(trim($stream));
                     } else {
                         $this->fpdi->error(sprintf("Unsupported Filter: %s",$_filter[1]));
@@ -437,7 +436,7 @@ class fpdi_pdf_parser extends pdf_parser {
     /**
      * Read all /Page(es)
      *
-     * @param object pdf_context
+     * @param object pdfContext
      * @param array /Pages
      * @param array the result-array
      */
