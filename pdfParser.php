@@ -17,6 +17,8 @@
 //  limitations under the License.
 //
 
+namespace PDF;
+
 if (!defined ('PDF_TYPE_NULL'))
     define ('PDF_TYPE_NULL', 0);
 if (!defined ('PDF_TYPE_NUMERIC'))
@@ -40,9 +42,9 @@ if (!defined ('PDF_TYPE_OBJECT'))
 if (!defined ('PDF_TYPE_STREAM'))
     define ('PDF_TYPE_STREAM', 10);
 
-require_once 'PDF/pdf_context.php';
+require_once __DIR__ . '/wrapper_functions.php';
 
-class pdf_parser {
+class pdfParser {
     
     /**
      * Filename
@@ -58,7 +60,7 @@ class pdf_parser {
     
     /**
      * PDF Context
-     * @var object pdf_context-Instance
+     * @var object pdfContext-Instance
      */
     var $c;
     
@@ -80,7 +82,7 @@ class pdf_parser {
      *
      * @param string $filename  Source-Filename
      */
-    function pdf_parser($filename) {
+    function __construct($filename) {
         $this->filename = $filename;
         
         $this->f = @fopen($this->filename,"rb");
@@ -90,7 +92,7 @@ class pdf_parser {
 
         $this->getPDFVersion();
 
-        $this->c = new pdf_context($this->f);
+        $this->c = new pdfContext($this->f);
         // Read xref-Data
         $this->pdf_read_xref($this->xref, $this->pdf_find_xref());
 
@@ -188,7 +190,7 @@ class pdf_parser {
             
             if ($data !== 'xref') {
                 fseek($this->f, $o_pos);
-                $data = trim(_fgets($this->f, true));
+                $data = trim(\_fgets($this->f, true));
                 
                 if ($data !== 'xref') {
                     $this->error("Unable to find xref table - Maybe a Problem with 'auto_detect_line_endings'");
@@ -199,7 +201,7 @@ class pdf_parser {
             $data = explode(' ', trim(fgets($this->f)));
             if (count($data) != 2) {
                 fseek($this->f, $o_pos);
-                $data = explode(' ', trim(_fgets($this->f, true)));
+                $data = explode(' ', trim(\_fgets($this->f, true)));
             
                 if (count($data) != 2)  
                     $this->error("Unexpected header in xref table");
@@ -235,7 +237,7 @@ class pdf_parser {
             }
             
             unset($c);
-            $c =  new pdf_context($this->f);
+            $c =  new pdfContext($this->f);
             $trailer = $this->pdf_read_value($c);
             
             if (isset($trailer[1]['/Prev'])) {
@@ -249,7 +251,7 @@ class pdf_parser {
             
             if (count($data) != 2) {
                 fseek($this->f, $o_pos);
-                $data = explode(' ', trim (_fgets ($this->f, true)));
+                $data = explode(' ', trim (\_fgets ($this->f, true)));
                 
                 if (count($data) != 2) {
                     $this->error("Unexpected data in xref table");
@@ -264,7 +266,7 @@ class pdf_parser {
     /**
      * Reads an Value
      *
-     * @param object $c pdf_context
+     * @param object $c pdfContext
      * @param string $token a Token
      * @return mixed
      */
@@ -401,7 +403,7 @@ class pdf_parser {
                     $e++;
                 
                 if ($this->actual_obj[1][1]['/Length'][0] == PDF_TYPE_OBJREF) {
-                    $tmp_c = new pdf_context($this->f);
+                    $tmp_c = new pdfContext($this->f);
                     $tmp_length = $this->pdf_resolve_object($tmp_c,$this->actual_obj[1][1]['/Length']);
                     $length = $tmp_length[1][1];
                 } else {
@@ -456,7 +458,7 @@ class pdf_parser {
     /**
      * Resolve an object
      *
-     * @param object $c pdf_context
+     * @param object $c pdfContext
      * @param array $obj_spec The object-data
      * @param boolean $encapsulate Must set to true, cause the parsing and fpdi use this method only without this para
      */
@@ -538,7 +540,7 @@ class pdf_parser {
     /**
      * Reads a token from the file
      *
-     * @param object $c pdf_context
+     * @param object $c pdfContext
      * @return mixed
      */
     function pdf_read_token(&$c)
@@ -557,7 +559,7 @@ class pdf_parser {
             if (!$c->ensure_content()) {
                 return false;
             }
-            $c->offset += _strspn($c->buffer, " \n\r", $c->offset);
+            $c->offset += \_strspn($c->buffer, " \n\r", $c->offset);
         } while ($c->offset >= $c->length - 1);
 
         // Get the first character in the stream
@@ -607,7 +609,7 @@ class pdf_parser {
 
                     // Determine the length of the token
 
-                    $pos = _strcspn($c->buffer, " []<>()\r\n\t/", $c->offset);
+                    $pos = \_strcspn($c->buffer, " []<>()\r\n\t/", $c->offset);
 
                     if ($c->offset + $pos <= $c->length - 1) {
                         break;

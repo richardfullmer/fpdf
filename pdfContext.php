@@ -16,8 +16,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
-class pdf_context {
+namespace PDF;
+class pdfContext {
 
     var $file;
     var $buffer;
@@ -28,7 +28,7 @@ class pdf_context {
 
     // Constructor
 
-    function pdf_context($f) {
+    function __construct($f) {
         $this->file = $f;
         $this->reset();
     }
