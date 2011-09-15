@@ -8,12 +8,11 @@
 *                                                                              *
 * You may use, modify and redistribute this software as you wish.              *
 *******************************************************************************/
-
-if(!class_exists('FPDF'))
-{
+namespace PDF;
 define('FPDF_VERSION','1.53');
+require_once __DIR__ . '/times.php';
 
-class FPDF
+class fpdf
 {
 //Private properties
 var $page;               //current page number
@@ -51,7 +50,8 @@ var $FontStyle;          //current font style
 var $underline;          //underlining flag
 var $CurrentFont;        //current font info
 var $FontSizePt;         //current font size in points
-var $FontSize;           //current font size in user unit
+var $FontSize;           //current font size in user unit1
+    
 var $DrawColor;          //commands for drawing color
 var $FillColor;          //commands for filling color
 var $TextColor;          //commands for text color
@@ -75,7 +75,7 @@ var $PDFVersion;         //PDF version number
 *                               Public methods                                 *
 *                                                                              *
 *******************************************************************************/
-function FPDF($orientation='P',$unit='mm',$format='A4')
+function __construct($orientation='P',$unit='mm',$format='A4')
 {
     //Some checks
     $this->_dochecks();
@@ -1641,7 +1641,5 @@ if(isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT']=='contype')
 {
     header('Content-Type: application/pdf');
     exit;
-}
-
 }
 ?>

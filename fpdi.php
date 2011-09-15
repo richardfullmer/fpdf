@@ -16,7 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
+namespace PDF;
 define ('PDF_TYPE_NULL', 0);
 define ('PDF_TYPE_NUMERIC', 1);
 define ('PDF_TYPE_TOKEN', 2);
@@ -31,10 +31,7 @@ define ('PDF_TYPE_STREAM', 10);
 
 ini_set('auto_detect_line_endings',1); // Strongly required!
 
-require_once 'PDF/fpdf_tpl.php';
-require_once 'PDF/fpdi_pdf_parser.php';
-
-class fpdi extends fpdf_tpl {
+class fpdi extends fpdfTpl {
     /**
      * Actual filename
      * @var string
@@ -87,8 +84,8 @@ class fpdi extends fpdf_tpl {
      * Constructor
      * See FPDF-Manual
      */
-    function fpdi($orientation='P',$unit='mm',$format='A4') {
-        parent::fpdf_tpl($orientation,$unit,$format);
+    function __construct($orientation='P',$unit='mm',$format='A4') {
+        parent::__construct($orientation,$unit,$format);
     }
     
     /**
@@ -101,7 +98,7 @@ class fpdi extends fpdf_tpl {
         $this->current_filename = $filename;
         $fn =& $this->current_filename;
 
-        $this->parsers[$fn] = new fpdi_pdf_parser($fn,$this);
+        $this->parsers[$fn] = new fpdiPdfParser($fn,$this);
         $this->current_parser =& $this->parsers[$fn];
         
         return $this->parsers[$fn]->getPageCount();

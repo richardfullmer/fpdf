@@ -17,9 +17,10 @@
 //  limitations under the License.
 //
 
-require_once("fpdf.php");
+namespace PDF;
+require_once __DIR__ . '/times.php';
 
-class fpdf_tpl extends fpdf {
+class fpdfTpl extends fpdf {
     /**
      * Array of Tpl-Data
      * @var array
@@ -64,8 +65,8 @@ class fpdf_tpl extends fpdf {
      * @param string $unit
      * @param mixed $format
      */
-    function fpdf_tpl($orientation='P',$unit='mm',$format='A4') {
-        parent::fpdf($orientation,$unit,$format);
+    function __construct($orientation='P',$unit='mm',$format='A4') {
+        parent::__construct($orientation,$unit,$format);
     }
     
     /**
