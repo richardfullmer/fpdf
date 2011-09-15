@@ -10,9 +10,9 @@
 *******************************************************************************/
 namespace PDF;
 define('FPDF_VERSION','1.53');
-require_once 'times.php';
+require_once __DIR__ . '/times.php';
 
-class FPDF
+class fpdf
 {
 //Private properties
 var $page;               //current page number

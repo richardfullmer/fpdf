@@ -42,7 +42,7 @@ if (!defined ('PDF_TYPE_OBJECT'))
 if (!defined ('PDF_TYPE_STREAM'))
     define ('PDF_TYPE_STREAM', 10);
 
-require_once 'wrapper_functions.php';
+require_once __DIR__ . '/wrapper_functions.php';
 
 class pdfParser {
     

@@ -18,7 +18,7 @@
 //
 
 namespace PDF;
-require_once 'times.php';
+require_once __DIR__ . '/times.php';
 
 class fpdfTpl extends fpdf {
     /**
